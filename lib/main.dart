@@ -9,6 +9,9 @@ void main() {
 }
 
 class SimplePlatformerGame extends FlameGame with HasKeyboardHandlerComponents {
+  SimplePlatformerGame() {
+    debugMode = true; // Mengaktifkan mode debugging Flame
+  }
   late Player player;
 
   @override
@@ -16,8 +19,7 @@ class SimplePlatformerGame extends FlameGame with HasKeyboardHandlerComponents {
     super.onLoad();
 
     // Add the player to the game world
-    player = Player()
-      ..position = Vector2(100, 100);
+    player = Player()..position = Vector2(100, 100);
     add(player);
 
     // Add a platform
@@ -38,9 +40,17 @@ class Player extends SpriteComponent with KeyboardHandler {
 
   @override
   Future<void> onLoad() async {
-    // Menggunakan Sprite.load untuk memuat gambar
-    sprite = await Sprite.load('assets/player.png'); // Menggunakan Sprite.load
-    size = Vector2(50, 50); // Adjust size based on your sprite
+    super.onLoad();
+
+    // Test rendering a simple rectangle
+    // add(RectangleComponent(
+    //   position: Vector2(100, 100),
+    //   size: Vector2(50, 50),
+    //   paint: Paint()..color = const Color(0xFF00FF00),
+    // ));
+
+    sprite = await Sprite.load('player.png');
+    size = Vector2(32, 32); // Adjust size based on your sprite
   }
 
   @override
@@ -56,7 +66,8 @@ class Player extends SpriteComponent with KeyboardHandler {
     position += velocity * dt;
 
     // Handle ground collision
-    if (position.y > 250) { // Simple collision with the platform
+    if (position.y > 250) {
+      // Simple collision with the platform
       position.y = 250;
       isOnGround = true;
       velocity.y = 0;
